@@ -191,13 +191,11 @@
                                     @endhasanyrole   
                                         <td style="background-color: rgb(247, 141, 141);">{{ $order->date_of_service }}</td>
                                       
-                                        @hasanyrole('vendor|receiver')
+                                        @hasanyrole('vendor|receiver|staff|admin')
                                         <td style="background-color: rgb(247, 141, 141);"><a href="/orders_show/{{ $order->id }}" >{{ $order->patient_name }}</a></td>
                                         
                                         @endhasanyrole
-                                        @hasanyrole('admin|staff')
-                                        <td style="background-color: rgb(247, 141, 141);"> <a href="/orders_show/{{ $order->id }}" >{{ $order->patient_name }}</a></td>
-                                        @endhasanyrole   
+                                         
                                         {{-- <td style="background-color: rgb(247, 141, 141);">{{ $order->tray_number }}</td>
                                         <td style="background-color: rgb(247, 141, 141);">{{ $order->type }}</td> --}}
                           @else 
@@ -208,13 +206,11 @@
                        @endhasanyrole   
                            <td >{{ $order->date_of_service }}</td>
                          
-                           @hasanyrole('vendor|receiver')
+                           @hasanyrole('vendor|receiver|staff|admin')
                            <td ><a href="/orders_show/{{ $order->id }}">{{ $order->patient_name }}</a></td>
                            
                            @endhasanyrole
-                           @hasanyrole('admin|staff')
-                           <td > <a href="/orders_show/{{ $order->id }}">{{ $order->patient_name }}</a></td>
-                           @endhasanyrole   
+                             
                            
                           @endif           
                                         {{-- <td>{{ $order->eye }}</td>
@@ -506,7 +502,11 @@ $(document).ready(function() {
       
 
    
-       var url = "{{ url('lab_status_change') }}";
+       
+
+} );
+    $(".order_status, .frame_status").change(function(){
+        var url = "{{ url('lab_status_change') }}";
        var order_status = 'Received';
        var frame_status = 'Received';
           $.ajax({
@@ -529,9 +529,7 @@ $(document).ready(function() {
                 //errorFunction(); 
             }
        });
-
-} );
-
+    });
 function calculateColumn(index) {
             var total = 0;
             $('table tr').each(function() {

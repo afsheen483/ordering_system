@@ -223,7 +223,7 @@
                         <div class="card-body">
                           <div class="table-responsive" id="dvData">
                             <form>
-                                <table class="display nowrap" id="example">
+                                <table class="display" id="example">
                                     <thead>
                                         <tr>
                                             
@@ -269,13 +269,11 @@
                                  
                                         <td style="background-color: rgb(247, 141, 141);">{{ $order->date_of_service }}</td>
                                       
-                                        @hasanyrole('vendor|receiver')
+                                        @hasanyrole('vendor|receiver|admin|staff')
                                         <td style="background-color: rgb(247, 141, 141);"><a href="/orders_show/{{ $order->order_head_id }}" >{{ $order->patient_name }}</a></td>
                                         
                                         @endhasanyrole
-                                        @hasanyrole('admin|staff')
-                                        <td style="background-color: rgb(247, 141, 141);"> <a href="/orders_show/{{ $order->order_head_id }}" >{{ $order->patient_name }}</a></td>
-                                        @endhasanyrole   
+                                          
                                         <td style="background-color: rgb(247, 141, 141);">{{ $order->tray_number }}</td>
                                         <td style="background-color: rgb(247, 141, 141);">{{ $order->type }}</td>
                           @else 
@@ -285,13 +283,11 @@
                        @endhasanyrole   
                            <td >{{ $order->date_of_service }}</td>
                          
-                           @hasanyrole('vendor|receiver')
+                           @hasanyrole('vendor|receiver|admin|staff')
                            <td ><a href="/orders_show/{{ $order->order_head_id }}">{{ $order->patient_name }}</a></td>
                            
                            @endhasanyrole
-                           @hasanyrole('admin|staff')
-                           <td > <a href="/orders_show/{{ $order->order_head_id }}">{{ $order->patient_name }}</a></td>
-                           @endhasanyrole  
+                          
                            <td>{{ $order->tray_number }}</td>
                            <td>{{ $order->type }}</td>
                           @endif           
@@ -391,13 +387,14 @@
 @section('scripts')
 
 
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.colVis.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 {{-- multiselect dropdwn --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
