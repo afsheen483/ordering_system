@@ -305,7 +305,7 @@
                                         @endhasrole
                                             @hasanyrole('receiver|admin')
                                         <td> 
-                                            <select name='order_status[]' style='display:none' class='update order_status'  onchange='receive_unreceive_order(this.value,{{ $order->id }})' id="select_lens_status_{{ $order->id }}">
+                                            <select name='order_status[]' style='display:none' class='update order_status'  onchange='receive_unreceive_order(this.value,{{ $order->id }})' id="select_lens_status_{{ $order->id }}" data-labStatus="{{ $order->id }}">
                                                 <option value='0'>Select</option>
                                                 <option value='Received'>Received</option>
                                                 <option value='Not Shipped'>Not Shipped</option>
@@ -336,7 +336,7 @@
                                           
                                      </td>
                                             <td>
-                                                <select name='frame_status[]' style='display:none' class='update frame_status'  onchange='change_frame_status(this.value,{{ $order->id }})' id="select_frame_status_{{ $order->id }}">
+                                                <select name='frame_status[]' style='display:none' class='update frame_status'  onchange='change_frame_status(this.value,{{ $order->id }})' id="select_frame_status_{{ $order->id }}" data-frameStatus="{{ $order->id }}">
                                                     <option value='0'>Select</option>
                                                     <option value='Received'>Received</option>
                                                     <option value='Shipped'>Shipped</option>
@@ -506,8 +506,17 @@ $(document).ready(function() {
 
 } );
     $(".order_status, .frame_status").change(function(){
+        var os_id = $(this).attr("data-labStatus");
+        var fs_id = $(this).attr("data-frameStatus");
+        //alert(fs_id);
         var url = "{{ url('lab_status_change') }}";
-       var order_status = 'Received';
+        var os = $(".order_status").text();
+       // alert(os);
+       var order_status = $("#select_lens_status_"+os_id).find(":selected").text();
+       //alert(order_status);
+       //var order_status = 'Received';
+       var frame_status = $("#select_frame_status_"+fs_id).find(":selected").text();
+      // alert(frame_status);
        var frame_status = 'Received';
           $.ajax({
          url: url,
