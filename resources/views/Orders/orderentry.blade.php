@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.dataTables.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('title')
@@ -129,7 +130,7 @@
                                             @endhasanyrole
                                            
                                             <th  data-priority="3">Date</th>
-                                            <th  data-priority="4">Patient</th>
+                                            <th  data-priority="-8">Patient</th>
                                             <th data-priority="-7">Tray Number</th>
                                             <th>Type</th>
                                             {{-- <th>Eye</th>
@@ -355,9 +356,11 @@
                                             @endhasanyrole
                                             @hasanyrole('staff|admin')
                                             <td><a href="/orders_edit/{{ $order->id }}" style="margin-left: 15%"><i
-                                                        class="fa fa-edit"></i></a>|
+                                                        class="fa fa-edit"></i></a> |
                                                         <a href="/orders_show/{{ $order->id }}"><i
-                                                            class="fa fa-eye"></i></a>
+                                                            class="fa fa-eye"></i></a> |
+                                                            <a style="color:red;cursor:pointer" id="{{ $order->id}}" data-delete="{{ $order->id }}" class="delete"><i
+                                                                class="fa fa-trash"></i></a>
                                             </td>
                                             @endhasanyrole
                                    
@@ -407,11 +410,12 @@
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.colVis.min.js"></script>
-<script src="https://cdn.datatables.net/plug-ins/1.10.22/api/sum().js"></script>
+
 <script>
             
 $(document).ready(function() {
@@ -434,10 +438,18 @@ $(document).ready(function() {
     table.buttons().container()
         .appendTo( '#example_wrapper .small-6.columns:eq(0)' );
         
-        $('table thead th').each(function(i) {
-                console.log(calculateColumn(i));
-            });
        
+    
+
+
+
+
+
+
+
+
+
+
     //    $(".edit_able").each(function(){
     //     // var order_status = $(this).text();
     //     var order_id = $(this).attr('data-id');
@@ -505,6 +517,54 @@ $(document).ready(function() {
        
 
 } );
+
+    // for delete purpose
+    $(".delete").click(function(){
+          var delete_id = $(this).attr("id");
+          var th=$(this);
+          console.log(delete_id);
+          var url = "{{url('orders_delete')}}/"+delete_id;
+          Swal.fire({
+							  title: 'Are you sure?',
+							  text: "You won't be able to revert this!",
+							  type: 'warning',
+							  showCancelButton: true,
+							  confirmButtonColor: '#3085d6',
+							  cancelButtonColor: '#d33',
+							  confirmButtonText: 'Yes, delete it!'
+							}).then(function(result){
+                if (result.isConfirmed)  
+                  {
+                      $.ajax({
+                      
+                        url : url,
+                        type : 'DELETE',
+                        cache: false,
+                        data: {_token:'{{ csrf_token() }}'},
+                        success:function(data){
+                         if (data == 1) {
+                          Swal.fire({
+                                title:'Deleted!',
+                                text:'Your file and data has been deleted.',
+                                type: 'success',
+                              })
+                              th.parents('tr').hide();
+                            }
+                          else{
+                                Swal.fire({
+                                    title: 'Oopps!',
+                                    text: "something went wrong!",
+                                    type: 'warning',
+                          			})
+                          		}
+                         }
+                        
+                        });
+                }
+              });
+               
+        });
+
     $(".order_status, .frame_status").change(function(){
         var os_id = $(this).attr("data-labStatus");
         var fs_id = $(this).attr("data-frameStatus");

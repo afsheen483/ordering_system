@@ -526,7 +526,15 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('orders')->where('patient_id','=',$id)->delete();
+        $order_log = DB::table('order_logs')->where('order_head_id','=',$id)->delete();
+       
+            DB::table('orders')->where('order_head_id','=',$id)->delete();
+            DB::table('order_head')->where('id','=',$id)->delete();
+
+            return 1;
+        
+       
+       
         //$order->delete();
         return redirect()->route('orders.index')->with('error','Data has deleted successfully!');
     }
