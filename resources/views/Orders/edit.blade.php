@@ -21,7 +21,7 @@ Order Entry
         @csrf
         @method('PUT')
         <div class="row">
-          <div class="form-group col-md-3  pr-1" style="margin-left:2%">
+          <div class="form-group col-md-3  pr-1" style="margin-left:4.8%">
             <label for="">RevolutionEHR Invoice Number</label>
           <input type="text" name="order_number" class="form-control" required placeholder="Enter Invoice Number" value="{{ $edit_order_head[0]->lens_order_number }}">
           </div>
@@ -136,8 +136,7 @@ Order Entry
                 <thead>
                 <tr>
                 <th></th>
-                <th></th>
-                <th></th>
+              
                   <th colspan="4">Right Eye</th>
                   <th colspan="4">Left Eye</th>
                 </tr>

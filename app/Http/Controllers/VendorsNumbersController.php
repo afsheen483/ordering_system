@@ -122,7 +122,7 @@ class VendorsNumbersController extends Controller
         }
             else{
                 $patient_id = $request->input('patient_id');
-                $p_id = explode(',', $patient_id[0]);
+                $p_id = explode(',', $patient_id);
             if(is_array($p_id)){
              //dd(($p_id));
                 foreach($p_id as $id){

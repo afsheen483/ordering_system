@@ -507,7 +507,8 @@ class OrderController extends Controller
                 //print_r($order_status);
                 //$frame_status = $request->frame_status;
                         $order_query=DB::table('order_head')->where('id','=',$id)->update(['order_status' => $order_status]);
-              
+                        $order_query=VendorNumberModel::where('id','=',$id)->where('order_status','Received')->orWhere('frame_status','Received')->update(['lab_status_id' => '2']);
+                        $order=VendorNumberModel::where('id','=',$id)->where('order_status','Received')->where('frame_status','Received')->update(['lab_status_id' => '3']);
                 } catch (\Throwable $th) {
                     //throw $th;
                     dd($th);
@@ -766,7 +767,7 @@ class OrderController extends Controller
         //$patient_data = array();
             
         //dd($print_id);
-       $p_id = explode(',', $print_id[0]);
+       $p_id = explode(',', $print_id);
      // dd($p_id);
         $data_id = array_shift($p_id);
         //dd($data_id);
@@ -786,7 +787,7 @@ class OrderController extends Controller
                 }
             } else{
                 $print_id = $request->input('print_id');
-            $p_id = explode(',', $print_id[0]);
+            $p_id = explode(',', $print_id);
         if(is_array($p_id)){
          //dd(($p_id));
          $patient_data = VendorNumberModel::select('order_head.*','patients.patient_name','patients.date_of_service','patients.tray_number','frame_models.model_name','frame_brands.brand_name')->join('patients','patients.id','order_head.patient_id')->join('frame_models','order_head.frame_model_id','frame_models.id')->join('frame_brands','frame_brands.id','frame_models.brand_id')->whereIn('order_head.id',$p_id)->get();
@@ -881,7 +882,7 @@ class OrderController extends Controller
     public function printMultipleOrders(Request $request)
     {
             $print_order_id = $request->print_order_id;
-            $p_id = explode(',', $print_order_id[0]);
+            $p_id = explode(',', $print_order_id);
             // dd($p_id);
                $data_id = array_shift($p_id);
                //dd($data_id);
@@ -901,7 +902,7 @@ class OrderController extends Controller
                        }
                    } else{
                        $print_order_id = $request->input('print_order_id');
-                   $p_id = explode(',', $print_order_id[0]);
+                   $p_id = explode(',', $print_order_id);
                if(is_array($p_id)){
                 //dd(($p_id));
                 $patient_data = Orders::select('orders.*','order_head.date','order_head.tracking_numbers','order_head.lens_order_number','order_head.frame_order_number','order_head.staff_notes','order_head.frame_status','order_head.order_status','patients.patient_name','patients.date_of_service','patients.tray_number','lens_type.lenses','users.name','prescription_type.type','frame_models.model_name','frame_brands.brand_name')->join('order_head','order_head.id','orders.order_head_id')->join('prescription_type','prescription_type.id','order_head.prescription_id')->join('patients','patients.id','order_head.patient_id')->join('lens_type','lens_type.id','orders.lens_type_id')->join('frame_models','frame_models.id','order_head.frame_model_id')->join('frame_brands','frame_models.brand_id','frame_brands.id')->join('users','users.id','order_head.vendor_id')->whereIn('orders.order_head_id',$p_id)->orderBy('patients.patient_name','ASC')->orderBy('orders.id','ASC')->orderBy('orders.eye','DESC')->get();
@@ -919,6 +920,8 @@ class OrderController extends Controller
     public function frameStatus($id, $frame_status)
     {
         $order_query=DB::table('order_head')->where('id','=',$id)->update(['frame_status' => $frame_status]);
+        $order_query=VendorNumberModel::where('id','=',$id)->where('order_status','Received')->orWhere('frame_status','Received')->update(['lab_status_id' => '2']);
+        $order=VendorNumberModel::where('id','=',$id)->where('order_status','Received')->where('frame_status','Received')->update(['lab_status_id' => '3']);
 
     }
 }

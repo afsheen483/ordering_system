@@ -158,278 +158,20 @@
                                 <table class="display nowrap" id="example">
                                     <thead>
                                         <tr >
-                                            @hasanyrole('admin|vendor')
-                                            <th data-priority="1"></th>
                                           
-                                            <th  data-priority="2"><input type="checkbox" name="checkAll" id="selectAll" value=""></th>
-                                            @endhasanyrole
+                                           
+                                          
+                                            
                                            
                                             <th  data-priority="3">Date</th>
                                             <th  data-priority="-8">Patient</th>
                                             <th data-priority="-7">Tray Number</th>
                                             <th>Type</th>
-                                            {{-- <th>Eye</th>
-                                            <th>Sph</th>
-                                            <th>Cyl</th>
-                                            <th>Axis</th>
-                                            <th>Add</th>
-                                            <th>PD</th>
-                                            <th>PH</th>
-                                            <th>Lens 
-                                            Type</th>
-                                            <th>Coating1</th>
-                                            <th>Coating2</th>
-                                            <th>Coating3</th>
-                                            <th>Coating4</th>
-                                            <th>A</th>
-                                            <th>B</th>
-                                            <th>DBL</th>
-                                            <th>ED</th> --}}
-                                            <th>Frame Models</th>
-                                            <th  data-priority="5">Shippment
-                                            Tracking<br>
-                                            Numbers</th>
-                                            <th>Invoice Number</th>
-                                            <th >Frame
-                                            Order Number</th>
-                                            @hasanyrole('vendor|admin|receiver')
-                                            <th  data-priority="-6">Price</th>
-                                            @endhasanyrole
-                                            @hasanyrole('admin|receiver|vendor')
-                                            <th  data-priority="-5">Paid</th>
-                                            @endhasanyrole
-                                            <th>Freight Cost</th>
-                                            <th>Staff Notes</th>
-                                            @hasanyrole('receiver|admin|vendor')
-                                            <th data-priority="-4">Lens Status</th>
-                                            <th data-priority="-3">Lab Status</th>
-                                            <th  data-priority="-2">Frame Status</th>
-                                            @endhasanyrole
-                                            @hasanyrole('staff|admin')
-                                            <th  data-priority="-1">Action</th>
-                                            @endhasanyrole
+                                           
+                                           
                                         </tr>
                                     </thead>
-                                    <tbody >
-                                   @php
-                                       //dd($orders[0]);
-                                       //return;
-                                   @endphp
-                                {{-- @if(!empty($orders)) --}}
-
-                                @php
-                                  $patient_ids = "";
-                                  $total_price = 0.00;
-                                  $tracking = '';
-                                  $freight_cost = 0.0;
-                                @endphp
-                                @foreach ($orders as $order)
-                                      
-                                     @php
-                                         $patient_ids .=  $order->id .",";
-                                          $total_price += $order->price;
-                                          $tracking = $order->tracking_number;
-                                          $freight_cost = $order->freight_cost;
-                                     @endphp 
-                                <tr>
-                    @if (date("Y-m-d", strtotime('+5 days', strtotime($order->date_of_service))) < date("Y-m-d") )
-                    @hasanyrole('admin|vendor')
-                                <td></td>
-       
-                                       <td style="background-color: rgb(247, 141, 141);"><input type="checkbox" name="patient[]" value="{{ $order->id }}" class="check_box" id="check-box" data-ordprice = "{{ $order->price }}" data-freight = "{{ $order->freight_cost}}"></td>   
-                                    @endhasanyrole   
-                                        <td style="background-color: rgb(247, 141, 141);">{{ $order->date_of_service }}</td>
-                                      
-                                        @hasanyrole('vendor|receiver|staff|admin')
-                                        <td style="background-color: rgb(247, 141, 141);"><a href="/orders_show/{{ $order->id }}" >{{ $order->patient_name }}</a></td>
-                                        
-                                        @endhasanyrole
-                                         
-                                        {{-- <td style="background-color: rgb(247, 141, 141);">{{ $order->tray_number }}</td>
-                                        <td style="background-color: rgb(247, 141, 141);">{{ $order->type }}</td> --}}
-                          @else 
-                          @hasanyrole('admin|vendor')
- 
-                                            <td></td>
-                          <td ><input type="checkbox" name="patient[]" value="{{ $order->id }}" class="check_box" id="check-box" ></td>   
-                       @endhasanyrole   
-                           <td >{{ $order->date_of_service }}</td>
-                         
-                           @hasanyrole('vendor|receiver|staff|admin')
-                           <td ><a href="/orders_show/{{ $order->id }}">{{ $order->patient_name }}</a></td>
-                           
-                           @endhasanyrole
-                             
-                           
-                          @endif           
-                                        {{-- <td>{{ $order->eye }}</td>
-                                        <td>{{ $order->sph }}</td>
-                                        <td>{{ $order->cyl }}</td>
-                                        <td>{{ $order->axis }}</td>
-                                        <td>{{ $order->add }}</td>
-                                        <td>{{ $order->pd }}</td>
-                                        <td>{{ $order->ph }}</td>
-                                        <td>{{ $order->lens_type->lenses }}</td>
-                                        <td>{{ $order->coating->coating}}</td>
-                                        <td>{{ $order->coating2->coating }}</td>
-                                        <td>{{ $order->coating3->coating }}</td>
-                                        <td>{{ $order->coating4->coating }}</td>
-                                        <td>{{ $order->a }}</td>
-                                        <td>{{ $order->b }}</td>
-                                        <td>{{ $order->dbl }}</td>
-                                        <td>{{ $order->ed }}</td> --}}
-                                        <td>
-                                            <input type = 'text' name='tray_number[]' style='display:none' class='form-control' onfocusout='insert_tray_number(this.value,{{ $order->patient_id }})' id="tray_number_insert_{{ $order->patient_id }}"/>
-                                            @if($order->tray_number == '')
-                                            <span data-tray="{{ $order->patient_id }}" class="EditTrayNumber" onclick="tray_number_toggle({{ $order->patient_id }})" id="tray_number_entry_{{ $order->patient_id }}" style="cursor: pointer;">0</span>
-                                            @else
-                                            <span data-tray="{{ $order->patient_id }}" class="EditTrayNumber" onclick="tray_number_toggle({{ $order->patient_id }})" id="tray_number_entry_{{ $order->patient_id }}" style="cursor: pointer;">{{ $order->tray_number }}</span>
-                                            @endif
-                                        </td>
-                                        <td>{{ $order->type }}</td>
-                                        <td>{{ $order->model_name }}</td>
-                                        
-                                        <td data-tray = "{{ $order->tracking_number }}">{{ $order->tracking_number }}</td>
-                                        <td >{{ $order->lens_order_number }}</td>
-                                        <td >{{ $order->frame_order_number }}</td>
-                                        
-                                        @hasanyrole('admin|receiver|vendor')                                       
-                                        <td>
-                                            <input type = 'text' style='display:none' name='price[]'   class='form-control' onfocusout='insert_Price(this.value,{{ $order->id }})' id="enter_price_entry_{{ $order->id }}"/>
-                                            @if ($order->price == '')
-                                            <span data-element="{{ $order->id  }}" class="editable" onclick="price_toggle({{ $order->id }})" id="price_entry_{{ $order->id }}" style="cursor: pointer;">0</span>
-                                            @else  
-                                            <span data-element="{{ $order->id  }}" class="editable" onclick="price_toggle({{ $order->id }})" id="price_entry_{{ $order->id }}" style="cursor: pointer;">{{ $order->price }}</span>
-                                            @endif
-                                        </td>
-                                      
-                                        @endhasanyrole
-                                        @hasrole('vendor')
-                                    
-                                        @if ($order->paid == '')
-                                            <td>0</td>
-                                        @else
-                                            <td>{{$order->paid }}</td>
-                                        @endif                                       
-                                        @endhasrole
-                                        @hasanyrole('admin|receiver')
-                                        <td>
-                                            <input type = 'number' name='paid[]' style='display:none' class='form-control' onfocusout='insert_paid(this.value,{{ $order->id }})' id="enter_paid-entry_{{ $order->id }}"/>
-                                            @if ($order->paid == '')
-                                                <span class="paid" data-paid="{{ $order->id}}" onclick="paid_toggle({{ $order->id }})" id="paid_entry_{{ $order->id }}" style="cursor: pointer;">0</span>
-                                            @else
-                                                <span class="paid" data-paid="{{ $order->id}}" onclick="paid_toggle({{ $order->id }})" id="paid_entry_{{ $order->id }}" style="cursor: pointer;">{{$order->paid }}</span>
-                                            @endif
-                                        </td>
-                                        @endhasanyrole
-                                        <td>{{ $order->freight_cost }}</td>
-                                        <td>{{ $order->staff_notes }}</td>
-                                        @hasrole('vendor')
-                                        <td> 
-                                            @if ($order->order_status == 'Received' || $order->order_status == 'Shipped')
-                                            {{-- <span data-id="{{$order->id }}" class=" badge badge-success edit_able" id="lblname">{{ $order->order_status }}</span> --}}
-                                            <h5><span  class="badge badge-success " > {{ $order->order_status }}</span></h5>
-                                           @else
-                                             <h5><span  class=" badge badge-warning "  >{{ $order->order_status }}</span></h5>
-
-                                            @endif
-                                          
-                                     </td>
-                                     <td> 
-                                       
-                                        @if ($order->status_type == 'Cancel Order' || $order->status_type == 'Dispensed' || $order->status_type == 'Waiting to Cut')
-                                        {{-- <span data-id="{{$order->id }}" class=" badge badge-success edit_able" id="lblname">{{ $order->order_status }}</span> --}}
-                                        <h5><span  class="badge badge-warning"> {{ $order->status_type }}</span></h5>
-                                       @else
-                                         <h5><span  class=" badge badge-success " >{{ $order->status_type }}</span></h5>
-
-                                        @endif
-                                      
-                                 </td>
-                                        <td>
-                                            @if ($order->frame_status == 'Received' || $order->frame_status == 'Shipped')
-                                            <h5><span  class="badge badge-success">{{ $order->frame_status }}</span></h5>
-                                            
-                                            @else
-                                            <h5><span  class=" badge badge-warning" >{{ $order->frame_status }}</span></h5>
-                                            @endif
-                                        </td>
-                                        
-                                        @endhasrole
-                                            @hasanyrole('receiver|admin')
-                                        <td> 
-                                            <select name='order_status[]' style='display:none' class='update order_status'  onchange='receive_unreceive_order(this.value,{{ $order->id }})' id="select_lens_status_{{ $order->id }}" data-labStatus="{{ $order->id }}">
-                                                <option value='0'>Select</option>
-                                                <option value='Received'>Received</option>
-                                                <option value='Shipped'>Shipped</option>
-                                                <option value='Not Shipped'>Not Shipped</option>
-                                                <option value='Missing'>Missing</option>
-                                                <option value="Picked from stock">Picked from stock</option>
-                                            </select>
-                                                @if ($order->order_status == 'Received' || $order->order_status == 'Shipped' || $order->order_status == 'Picked from stock' )
-                                                {{-- <span data-id="{{$order->id }}" class=" badge badge-success edit_able" id="lblname">{{ $order->order_status }}</span> --}}
-                                                <h5><span data-id="{{$order->id }}" class="badge badge-success edit_able" id="lable_lens_status_{{ $order->id }}" onclick="lens_status_toggle({{ $order->id }})" style="cursor: pointer;">{{ $order->order_status }}</span></h5>
-                                               @else
-                                                 <h5><span data-id="{{ $order->id }}" class=" badge badge-warning edit_able" id="lable_lens_status_{{ $order->id }}" onclick="lens_status_toggle({{ $order->id }})" style="cursor: pointer;">{{ $order->order_status }}</span></h5>
-
-                                                @endif
-                                              
-                                         </td>
-                                         <td data-st="{{ $order->id }}" id="data-st"> 
-                                            <select name='lab_status_id[]'  style='display:none' class='update lab_status'  onchange='change_status_lab(this.value,{{ $order->id }})' id="select_lab_{{ $order->id }}">
-                                                @foreach ($lab_status_array as $status)
-                                                    <option value="{{ $status->id }}">{{ $status->status_type }}</option>
-                                                @endforeach
-                                            </select>
-                                            @if ($order->status_type == 'Cancel Order' || $order->status_type == 'Dispensed' || $order->status_type == 'Waiting to Cut')
-                                            {{-- <span data-id="{{$order->id }}" class=" badge badge-success edit_able" id="lblname">{{ $order->order_status }}</span> --}}
-                                            <h5><span data-lab="{{$order->id }}" class="badge badge-warning lab_status_editable" id="lbl_lab_{{ $order->id }}" onclick="lab_status_toggle({{ $order->id }})" style="cursor: pointer;">{{ $order->status_type }}</span></h5>
-                                           @else
-                                             <h5><span data-lab="{{ $order->id }}" class=" badge badge-success lab_status_editable" id="lbl_lab_{{ $order->id }}" onclick="lab_status_toggle({{ $order->id }})" style="cursor: pointer;" >{{ $order->status_type }}</span></h5>
-
-                                            @endif
-                                          
-                                     </td>
-                                            <td>
-                                                <select name='frame_status[]' style='display:none' class='update frame_status'  onchange='change_frame_status(this.value,{{ $order->id }})' id="select_frame_status_{{ $order->id }}" data-frameStatus="{{ $order->id }}">
-                                                    <option value='0'>Select</option>
-                                                    <option value='Received'>Received</option>
-                                                    <option value='Shipped'>Shipped</option>
-                                                    <option value='Not Shipped'>Not Shipped</option>
-                                                    <option value='Missing'>Missing</option>
-                                                </select>
-                                                @if ($order->frame_status == 'Received' || $order->frame_status == 'Shipped')
-                                                <h5><span data-frame="{{$order->id }}" class="badge badge-success edit_frame" id="lable_frame_status_{{ $order->id }}" onclick="frame_status_toggle({{ $order->id }})" style="cursor: pointer;">{{ $order->frame_status }}</span></h5>
-                                                
-                                                @else
-                                                <h5><span data-frame="{{ $order->id }}" class=" badge badge-warning edit_frame" id="lable_frame_status_{{ $order->id }}" onclick="frame_status_toggle({{ $order->id }})" style="cursor: pointer;">{{ $order->frame_status }}</span></h5>
-                                                @endif
-                                            </td>
-                                            
-
-                                            @endhasanyrole
-                                            @hasanyrole('staff|admin')
-                                            <td><a href="/orders_edit/{{ $order->id }}" style="margin-left: 15%"><i
-                                                        class="fa fa-edit"></i></a> |
-                                                        <a href="/orders_show/{{ $order->id }}"><i
-                                                            class="fa fa-eye"></i></a> |
-                                                            <a style="color:red;cursor:pointer" id="{{ $order->id}}" data-delete="{{ $order->id }}" class="delete"><i
-                                                                class="fa fa-trash"></i></a>
-                                            </td>
-                                            @endhasanyrole
                                    
-                                        </td>
-                                      
-                                       
-                                        </tr>
-                                        @endforeach
-                                      
-                                      <input type="text" name="all_patient_ids" value="{{ $patient_ids }}" id="all_patient_ids" hidden>
-                                      <input type="text" name="all_order_price"  value="{{ $total_price }}" id="all_order_price" hidden>
-                                      <input type="text" name="all_tracking_numbers" value="{{ $tracking }}" id="all_tracking_numbers" hidden>                                        
-                                      <input type="text" name="all_f_cost" value="{{ $freight_cost }}" id="all_f_cost" hidden>
-                                    </tbody>
-                                    
                                 </table>
                                 
                             </div>
@@ -482,6 +224,15 @@ $(document).ready(function() {
         pageLength: 10,
         lengthChange: true,
         ordering:false,
+          processing: true,
+                serverSide: true,
+                ajax: "{{ route('server.side.index') }}",
+                columns: [
+                    { "data": "date" },
+                    { "data": "patient_name" },
+                    { "data": "tray_number" },
+                    { "data": "type" },
+                ],
         
         buttons: [
             'colvis',

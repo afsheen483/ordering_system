@@ -426,7 +426,11 @@ $(document).ready(function() {
             'excelHtml5',
             'csvHtml5',
             
-        ]
+        ],
+        search: {
+     regex: false,
+     smart: false
+  }
     } );
  
     table.buttons().container()

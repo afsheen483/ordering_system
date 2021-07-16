@@ -17,7 +17,7 @@ Order Entry
       <a href="/orders-list/all" class="btn btn-primary rounded" style="float: right; margin-top:-2.5%" >Back</a>
     
     <div class="card-body">
-        <form method="POST" action="{{ route('orders.store')}}">
+        <form method="POST" action="{{ route('orders.store')}}" id="form">
         @csrf
        <div class="row">
         <div class="form-group col-md-3  pr-1" >
@@ -76,7 +76,7 @@ Order Entry
               </div>
               <hr>
             </div>
-            <div class="container" style="margin-left:20cm;">
+            <div class="container" style="margin-left:22cm;">
               <div class="form-group col-lg-4">
                 <label for="">Order Number For Frame</label>
                 <input type="text" name="frame_order_number" class="form-control">
@@ -120,9 +120,8 @@ Order Entry
               <table class="table-responsive">
                 <thead>
                 <tr>
-                <th></th>
-                <th></th>
-                <th></th>
+                  <th></th>
+               
                   <th colspan="4">Right Eye</th>
                   <th colspan="4">Left Eye</th>
                 </tr>
@@ -394,7 +393,7 @@ Order Entry
                 </table>
                 <div class="col-md-4" style="margin-left:100px; margin-top:5px;">
                   <div class="form-group" >
-                    <button type="submit" class="btn btn-block btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-block btn-primary disable">Submit</button>
                   </div>
               </div>
               
@@ -428,6 +427,20 @@ $("#brand_id").select2({
   tags: true
 });
 $(document).ready(function (){
+
+
+  $('#form').submit(function(e)
+{  
+    //Stop submit
+    e.preventDefault(); 
+
+    //Do what you want
+    $('.disable').attr('disabled',true);
+    //alert('done');
+
+    //Submit
+    this.submit();
+}); 
   // $("#brand_id").on('change',function(){
   //             var brand_id = $("#brand_id").val();
             

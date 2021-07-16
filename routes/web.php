@@ -180,3 +180,5 @@ Route::put('update_tray_number/{id}', 'VendorsNumbersController@InsertTrayNumber
 Route::put('update_lab_status/{order_id}', 'OrderHeadController@update');
 Route::put('lab_status_change', 'OrderHeadController@ChangeLabStatus');
 
+// for test purpose
+Route::get('test','TestController@index')->name('server.side.index');

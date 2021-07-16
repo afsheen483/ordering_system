@@ -86,14 +86,14 @@ class OrderHeadController extends Controller
     }
     public function ChangeLabStatus(Request $request)
     {   
-        $order_status = $request->order_status;
-        $frame_status = $request->frame_status;
-        echo($order_status);
-        echo($frame_status);
+        // $order_status = $request->order_status;
+        // $frame_status = $request->frame_status;
+        // echo($order_status);
+        // echo($frame_status);
        
-        $order_query=VendorNumberModel::where('order_status','Received')->orWhere('frame_status','Received')->update(['lab_status_id' => '2']);
-        $order=VendorNumberModel::where('order_status','Received')->where('frame_status','Received')->update(['lab_status_id' => '3']);
-        dd($order_query);
+        // $order_query=VendorNumberModel::where('order_status','Received')->orWhere('frame_status','Received')->update(['lab_status_id' => '2']);
+        // $order=VendorNumberModel::where('order_status','Received')->where('frame_status','Received')->update(['lab_status_id' => '3']);
+        // dd($order_query);
 
     }
 }
